@@ -49,25 +49,25 @@ public class HttpServerThrottling {
         String response;
         String request;
         int b;
-        StringBuilder buf;
+        StringBuilder stringBuilder;
 
         printRequestInfo(exchange);
 
         InputStream is=exchange.getRequestBody();
-        buf=new StringBuilder();
+        stringBuilder=new StringBuilder();
         while((b=is.read())!=-1) {
-            buf.append((char) b);
+            stringBuilder.append((char) b);
         }
         is.close();
 
-        if(buf.length()>0) {
-            request = URLDecoder.decode(buf.toString(), "UTF-8");
+        if(stringBuilder.length()>0) {
+            request = URLDecoder.decode(stringBuilder.toString(), "UTF-8");
         } else {
             request = "There is no body";
         }
-        buf=new StringBuilder();
-        buf.append(request);
-        response=buf.toString();
+        stringBuilder=new StringBuilder();
+        stringBuilder.append(request);
+        response=stringBuilder.toString();
 
         a++;
         System.out.println(a);
@@ -76,9 +76,9 @@ public class HttpServerThrottling {
         } else {
             exchange.sendResponseHeaders(429, response.getBytes().length);//response code and length
         }
-        OutputStream os = exchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        OutputStream outputStream = exchange.getResponseBody();
+        outputStream.write(response.getBytes());
+        outputStream.close();
     }
 
     private static void printRequestInfo(HttpExchange exchange) {
