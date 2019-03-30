@@ -14,7 +14,7 @@ This is a generic library intended to implement client-side throttling by reject
 
 ![DataflowThrottling DAG](img/dataflow-throttling-dag.png "Dataflow Throttling DAG")
 
-### Throttle with single group
+### Throttle with multiple groups
 
 Implemented DynamicThrottlingTransform using stateful processing with single group of elements that represent requests to the external service. We’re going to maintain the following states.
 
@@ -23,8 +23,6 @@ Implemented DynamicThrottlingTransform using stateful processing with single gro
 * totalRequestsProcessed number
 
 The count of the incoming requests and accepted requests should be equal under normal conditions. Once the requests start getting rejected, the number of processing requests gets decreased by the difference of incoming requests and accepted requests.
-
-### Throttle with multiple groups
 
 Pipeline will process the payload in multiple number of groups as well. To achieve this, pipeline will transforms the single PCollection[Bounded/Unbounded] into multiple groups.
 
@@ -41,7 +39,7 @@ Dataflow pipeline will maintain the number of requests it has sent to the backen
     ```RequestRejectionProbability = (total_requests - k * total_accepts)/(total_requests+1)```
 If it is more than a random number between 0 or 1, incoming requests will be sent to either Pub/Sub dead letter queue or any other sink defined by the user.
 
-### Appendix
+### Library testing
 
 #### Requirements
 
