@@ -4,10 +4,6 @@
 
 This artifact is designed to implement adaptive client-side throttling. Adaptive throttling activates when a service called by Dataflow starts rejecting requests due to throughput higher than expected. Adaptive throttling tracks the request rejection probability to decide whether it should fail locally without going through network to save the cost of rejecting a request.
 
-### HTTP Server with Throttling capabilities
-
-To simulate a third-party service a web server is created intended to accept and process certain number of HTTP requests only, remaining requests should get rejected. The requests will be sent from a job running on Dataflow. Each HTTP request will carry an element from the ParDo function as payload. See Appendix for more details.
-
 ### Dataflow Throttling
 
 This is a generic library intended to implement client-side throttling by rejecting requests that have a high probability of being rejected locally on Dataflow nodes. Irrespective of Batch or Streaming, when Dataflow pipeline is sending HTTP requests to the server with input elements as payload, once the request has been processed by the backend, it should send a response back to the pipeline whether the http request has been accepted or rejected. The error code depends up on the backend throttling implementation (defaults to HTTP code 429).
@@ -45,6 +41,10 @@ If it is more than a random number between 0 or 1, incoming requests will be sen
 
 * Install Java 8
 * Install Maven 3
+
+### HTTP Server with Throttling capabilities
+
+To simulate a third-party service a web server is created intended to accept and process certain number of HTTP requests only, remaining requests should get rejected. The requests will be sent from a job running on Dataflow. Each HTTP request will carry an element from the ParDo function as payload. See Appendix for more details.
 
 #### Clone the repository
 
